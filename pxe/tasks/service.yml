@@ -1,0 +1,38 @@
+---
+   - name: Adding services in Firewall
+     firewalld:
+      service: "{{ item }}"
+      state: enabled
+      permanent: yes
+      immediate: yes
+     with_items:
+      - dns
+      - http
+      - tftp
+
+   - name: Adding ports in Firewall
+     firewalld:
+      port: "{{ item }}"
+      state: enabled
+      permanent: yes
+      immediate: yes
+     with_items:
+      - 69/udp
+
+
+   - name: Put SELinux in permissive mode, logging actions that would be blocked.
+     selinux:
+      policy: targeted
+      state: permissive
+
+   - name: Restart various services
+     service:
+      name: "{{ item }}"
+      state: started
+      enabled: true
+     with_items:
+      - dnsmasq
+      - httpd
+      - tftp
+
+

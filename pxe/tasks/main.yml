@@ -1,0 +1,6 @@
+---
+# tasks file for pxe
+  - include_tasks: install.yml
+  - include_tasks: service.yml
+  - include_tasks: config.yml
+

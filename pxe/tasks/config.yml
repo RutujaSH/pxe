@@ -1,0 +1,75 @@
+---
+  - name: copy dnsmasq
+    copy:
+     src: "{{ role_path }}/files/dnsmasq.conf"
+     dest: "{{ destination }}"
+     remote_src: yes
+     force: yes
+
+  - name: copy content of syslinux
+    copy:
+     src: /usr/share/syslinux
+     dest: /var/lib/tftpboot/
+     force: yes
+
+#  - name: mount
+#    mount:
+#     src: "{{ iso_path }}"
+#     dest: /mnt/
+#     state: present
+
+  - name: Create a directory in /var/lib/tftpboot
+    file:
+     path: /var/lib/tftpboot/centos8
+     state: directory
+
+#  - name: copy vmlinuz
+#    copy:
+#     src: /mnt/images/pxeboot/vmlinuz
+#     dest: /var/lib/tftp/boot/centos8/
+
+#  - name: copy initrd.img
+#    copy:
+#    src: /mnt/images/pxeboot/initrd.img
+#    dest: /var/lib/tftp/boot/centos8/
+
+#change in /etc/httpdconf/httpd.conf
+
+  - name: Remove file welcome.conf
+    file:
+     path: /etc/httpd/conf.d/welcome.conf
+     state: absent
+
+  - name: Create a directory
+    file:
+     path: /var/www/contos8
+     state: directory
+
+#  - name: copy content of /mnt
+#    copy:
+#    src: /mnt/
+#    dest: /var/www/centos8
+
+  - name: Remove the directory /var/www/html
+    file:
+     path: /var/www/html
+     state: absent
+
+  - name: Create a directory in /var/lib/tftpboot
+    file:
+     path: /var/lib/tftpboot/prelinux.cfg
+     state: directory
+
+  - name: copy defaults
+    copy:
+     src: "{{ role_path }}/files/defaults"
+     dest: /var/lib/tftpboot/prelinux.cfg/
+
+  - name: copy defaults
+    copy:
+     src: "{{ role_path }}/files/anaconda-ks.cfg"
+     dest: /var/www/centos8/
+     mode: '0777'
+
+  - name: kickstart validation
+    command: ksvalidator /var/www/centos8/anaconda-ks.cfg

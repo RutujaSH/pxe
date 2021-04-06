@@ -1,0 +1,21 @@
+---
+# vars file for pxe
+# - vars:
+#    packages:
+#       - dnsmasq
+#       - syslinux
+#       - tftp
+#       - http
+#
+#     services:
+#       - dnsmasq
+#       - httpd
+#       - tftp
+#
+#     firewalls:
+#       - http
+#       - dns
+#       - tftp
+#
+#     ports:
+#       - 69/udp
